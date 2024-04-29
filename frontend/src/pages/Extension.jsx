@@ -34,7 +34,7 @@ function App() {
                 <img src={jntuLogo} alt="JNTUA Logo" style={{ width: '100px', height: '100px', borderRadius: '50%' }} />
 
                 <h2>Jawaharlal Nehru Technological University Anantapur</h2>
-                <h3>Extension And Cancellation Of Ph.D Scholars</h3>
+                <h3>Re-Registration And Cancellation Of Ph.D Scholars</h3>
 
             </header>
 

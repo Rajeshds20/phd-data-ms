@@ -26,7 +26,7 @@ function VivaVoceHome() {
                 cursor: 'pointer',
                 display: 'block',
                 margin: '20px auto'
-            }} onClick={() => window.location.href = '/vivavoce'}>Pre-Courses Section</button>
+            }} onClick={() => window.location.href = '/courses'}>Pre-Ph.D Courses Section</button>
         </div>
     )
 }

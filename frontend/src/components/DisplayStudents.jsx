@@ -86,7 +86,9 @@ export default function StudentsDetails({ students }) {
                 students && <DataGrid
                     rows={students.map(student => ({
                         ...student,
-                        gender: student.gender == 'Female' ? 'F' : student.gender == 'Male' ? 'M' : 'Other',
+                        // gender: student.gender == 'Female' ? 'F' : student.gender == 'Male' ? 'M' : 'Other',
+                        // Lowercase gender check
+                        gender: student.gender.toLowerCase() == 'female' ? 'F' : student.gender.toLowerCase() == 'male' ? 'M' : 'Other',
                         doa: dateFormat(student.doa),
                         email: student.email || '-'
                     }))} // Convert date to string

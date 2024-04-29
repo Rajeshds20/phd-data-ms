@@ -88,54 +88,9 @@ function AdminsData() {
             .catch(err => console.log(err));
     };
 
-    // {
-    //     "admins": [
-    //         {
-    //             "admin_id": 1,
-    //             "name": "Director",
-    //             "email": "super-admin@rnd.jntua.ac.in",
-    //             "password": "Admin@123",
-    //             "role": "Super_Admin",
-    //             "access": "All"
-    //         },
-    //         {
-    //             "admin_id": 2,
-    //             "name": "Registrations",
-    //             "email": "registrations@rnd.jntua.ac.in",
-    //             "password": "Registrations@123",
-    //             "role": "Admin",
-    //             "access": "Registration"
-    //         },
-    //         {
-    //             "admin_id": 3,
-    //             "name": "Extensions",
-    //             "email": "extensions@rnd.jntua.ac.in",
-    //             "password": "Extensions@123",
-    //             "role": "Admin",
-    //             "access": "Extension"
-    //         },
-    //         {
-    //             "admin_id": 4,
-    //             "name": "Accounts",
-    //             "email": "accounts@rnd.jntua.ac.in",
-    //             "password": "Accounts@123",
-    //             "role": "Admin",
-    //             "access": "Accounts"
-    //         },
-    //         {
-    //             "admin_id": 5,
-    //             "name": "Viva Voce",
-    //             "email": "vivavoce@rnd.jntua.ac.in",
-    //             "password": "Vivavoce@123",
-    //             "role": "Admin",
-    //             "access": "Vivavoce"
-    //         }
-    //     ]
-    // }
-
     return (
         <div>
-            <h1>Admins Data Page</h1>
+            <h1>Admins Data</h1>
 
             {/* Admin Update, Read and Delete Operations */}
             <div>

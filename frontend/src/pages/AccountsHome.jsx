@@ -32,25 +32,6 @@ function AccountsHome() {
             .catch(err => console.log(err));
     }, []);
 
-    // {
-    //     "accounts": [
-    //         {
-    //             "StudentID": "18PH0406",
-    //             "DDNumber": "080619",
-    //             "AmountPaid": "20850.00",
-    //             "DatePaid": "2019-01-27T18:30:00.000Z",
-    //             "PaymentType": "N/A"
-    //         },
-    //         {
-    //             "StudentID": "18PH0406",
-    //             "DDNumber": "676534",
-    //             "AmountPaid": "20000.00",
-    //             "DatePaid": "2019-07-28T18:30:00.000Z",
-    //             "PaymentType": "N/A"
-    //         }
-    //     ]
-    // }
-
     return (
         <div>
             <h1>Accounts</h1>
@@ -102,7 +83,7 @@ function AccountsHome() {
                     <option value='Online'>Online</option>
                 </select>
                 <br />
-                <button type='submit'>Add Account</button>
+                <button type='submit'>Add Record</button>
             </form>
 
             {/* Specific student's accounts Page */}
