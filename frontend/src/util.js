@@ -17,8 +17,13 @@ function dateTimeFormat(date) {
     return `${dateFormat(date)} ${timeFormat(date)}`;
 }
 
+const indianCurrencyDisplay = (amount) => {
+    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(amount);
+}
+
 export {
     dateFormat,
     timeFormat,
-    dateTimeFormat
+    dateTimeFormat,
+    indianCurrencyDisplay
 }

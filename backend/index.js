@@ -104,6 +104,30 @@ mysql> desc guide_changes;
 +----------------+-------------+------+-----+---------+----------------+
 5 rows in set (0.00 sec)
 
+mysql> desc courses;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| course_id   | varchar(255) | NO   | PRI | NULL    |       |
+| course_name | varchar(255) | NO   |     | NULL    |       |
+| description | text         | YES  |     | NULL    |       |
+| credits     | int          | NO   |     | NULL    |       |
+| source      | varchar(255) | YES  |     | NULL    |       |
+| mode        | varchar(255) | YES  |     | NULL    |       |
+| duration    | int          | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> desc course_enrollments;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| student_id | varchar(255) | YES  | MUL | NULL    |       |
+| course_id  | varchar(255) | YES  | MUL | NULL    |       |
+| passed     | tinyint(1)   | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
 */
 
 // Connect to MySQL
@@ -173,7 +197,8 @@ app.get('/students', verifyToken, (req, res) => {
             const totalCount = countResults[0].totalCount;
             // const query = `SELECT * FROM students LIMIT ${limit} OFFSET ${offset}`;
             // Get Students data, and respective name from the guide_id and co_guide_id fields from guides table
-            const query = `SELECT s.*, g1.name as guide_name, g2.name as co_guide_name FROM students s LEFT JOIN guides g1 ON s.guide_id = g1.guide_id LEFT JOIN guides g2 ON s.co_guide_id = g2.guide_id LIMIT ${limit} OFFSET ${offset}`;
+            // const query = `SELECT s.*, g1.name as guide_name, g2.name as co_guide_name FROM students s LEFT JOIN guides g1 ON s.guide_id = g1.guide_id LEFT JOIN guides g2 ON s.co_guide_id = g2.guide_id LIMIT ${limit} OFFSET ${offset}`;
+            const query = `SELECT s.*, g1.name as guide_name, g2.name as co_guide_name FROM students s LEFT JOIN guides g1 ON s.guide_id = g1.guide_id LEFT JOIN guides g2 ON s.co_guide_id = g2.guide_id`;
             db.query(query, (err, results) => {
                 res.status(200).json({ totalCount, students: results });
             });
@@ -196,7 +221,7 @@ app.post('/students/add', verifyToken, function (req, res) {
         status = status || null;
         co_guide_id = co_guide_id || 0;
 
-        const query = `INSERT INTO Students (admn_no, name, mode, year, branch, guide_id, co_guide_id, phone, email, address, gender, category, research_topic, qualification, doa, fatherORhusband, status) VALUES ('${admn_no}', '${name}', '${mode}', ${year}, '${branch}', ${guide_id}, ${co_guide_id}, '${phone}', '${email || ''}', '${address}', '${gender}', '${category}', '${research_topic}', '${qualification}', '${doa}', '${fatherORhusband}', '${status}');`;
+        const query = `INSERT INTO Students (admn_no, name, mode, year, branch, guide_id, co_guide_id, phone, email, address, gender, category, research_topic, qualification, doa, fatherORhusband, status) VALUES('${admn_no}', '${name}', '${mode}', ${year}, '${branch}', ${guide_id}, ${co_guide_id}, '${phone}', '${email || ''}', '${address}', '${gender}', '${category}', '${research_topic}', '${qualification}', '${doa}', '${fatherORhusband}', '${status}'); `;
         // console.log(query);
         db.query(query, (err, result) => {
             if (err) {
@@ -215,7 +240,7 @@ app.post('/students/add', verifyToken, function (req, res) {
 app.get('/students/:id', (req, res) => {
     try {
         const id = req.params.id;
-        // const query = `SELECT * FROM students WHERE admn_no = ${id}`;
+        // const query = `SELECT * FROM students WHERE admn_no = ${ id } `;
         // const query = `SELECT * FROM students WHERE admn_no = '${id}'`; 
         // Get data from table if only the id is present in table, also retrieve guide and co_guide names from guide_id and co_guide_id from guides table
         const query = `SELECT s.*, g1.name as guide_name, g2.name as co_guide_name FROM students s LEFT JOIN guides g1 ON s.guide_id = g1.guide_id LEFT JOIN guides g2 ON s.co_guide_id = g2.guide_id WHERE s.admn_no = '${id}'`;
@@ -262,7 +287,7 @@ app.post('/guides/add', verifyToken, async function (req, res) {
                 return res.status(500).json({ message: 'Error occurred while adding guide' });
             }
             const guide_id = countResult[0].count;
-            const query = `INSERT INTO Guides (guide_id, name, designation, college, phone, email) VALUES ( ${guide_id}, '${name}', '${designation}', '${college}', '${phone || ''}', '${email || ''}');`;
+            const query = `INSERT INTO Guides(guide_id, name, designation, college, phone, email) VALUES(${guide_id}, '${name}', '${designation}', '${college}', '${phone || ''}', '${email || ''}'); `;
             // console.log(query);
             db.query(query, (err, result) => {
                 if (err) {
@@ -288,7 +313,7 @@ app.put('/guides/:id', verifyToken, async (req, res) => {
             return res.status(400).json({ message: 'Please fill all the fields' });
         }
 
-        const query = `UPDATE Guides SET name = '${name}', designation = '${designation}', college = '${college}', phone = '${phone}', email = '${email}' WHERE guide_id = ${id};`;
+        const query = `UPDATE Guides SET name = '${name}', designation = '${designation}', college = '${college}', phone = '${phone}', email = '${email}' WHERE guide_id = ${id}; `;
         db.query(query, (err, result) => {
             if (err) {
                 console.log(err);
@@ -326,7 +351,7 @@ app.post('/admins/add', verifyToken, async (req, res) => {
             return res.status(400).json({ message: 'Please fill all the fields' });
         }
 
-        const query = `INSERT INTO Admins (name, email, password, role, access) VALUES ('${name}', '${email}', '${password}', '${role}', '${access}');`;
+        const query = `INSERT INTO Admins(name, email, password, role, access) VALUES('${name}', '${email}', '${password}', '${role}', '${access}'); `;
         // console.log(query);
         db.query(query, (err, result) => {
             if (err) {
@@ -346,7 +371,7 @@ app.delete('/admins/:id', verifyToken, async (req, res) => {
     try {
         const id = req.params.id;
         const query = `DELETE FROM Admins WHERE admin_id = ${id
-            }`;
+            } `;
         db.query(query, (err, result) => {
             if (err) {
                 console.log(err);
@@ -371,7 +396,7 @@ app.put('/admins/:id', verifyToken, async (req, res) => {
 
         // console.log(email);
 
-        const query = `UPDATE Admins SET name = '${name}', email = '${email}', password = '${password}', role = '${role}', access = '${access}' WHERE admin_id = ${id};`;
+        const query = `UPDATE Admins SET name = '${name}', email = '${email}', password = '${password}', role = '${role}', access = '${access}' WHERE admin_id = ${id}; `;
         db.query(query, (err, result) => {
             if (err) {
                 console.log(err);
@@ -393,7 +418,7 @@ app.post('/accounts/add', verifyToken, async (req, res) => {
             return res.status(400).json({ message: 'Please fill all the fields' });
         }
 
-        const query = `INSERT INTO Account_Details (StudentID, DDNumber, AmountPaid, DatePaid) VALUES ('${StudentID}', '${DDNumber}', ${AmountPaid}, '${DatePaid}');`;
+        const query = `INSERT INTO Account_Details(StudentID, DDNumber, AmountPaid, DatePaid) VALUES('${StudentID}', '${DDNumber}', ${AmountPaid}, '${DatePaid}'); `;
         db.query(query, (err, result) => {
             if (err) {
                 console.log(err);
@@ -410,7 +435,7 @@ app.post('/accounts/add', verifyToken, async (req, res) => {
 app.get('/accounts', verifyToken, async (req, res) => {
     try {
         // Limit to latest 50 records
-        const query = `SELECT * FROM account_details ORDER BY DatePaid DESC LIMIT 50;`;
+        const query = `SELECT * FROM account_details ORDER BY DatePaid DESC LIMIT 50; `;
         db.query(query, (err, result) => {
             if (err) {
                 console.log(err);
@@ -426,7 +451,7 @@ app.get('/accounts', verifyToken, async (req, res) => {
 app.delete('/accounts/:id', verifyToken, async (req, res) => {
     try {
         const id = req.params.id;
-        const query = `DELETE FROM Account_Details WHERE StudentID = '${id}';`;
+        const query = `DELETE FROM Account_Details WHERE StudentID = '${id}'; `;
         db.query(query, (err, result) => {
             if (err) {
                 console.log(err);
@@ -444,9 +469,9 @@ app.delete('/accounts/:id', verifyToken, async (req, res) => {
 app.get('/accounts/:student_id', verifyToken, async (req, res) => {
     try {
         const student_id = req.params.student_id;
-        // const query = `SELECT * FROM account_details WHERE StudentID = '${student_id}';`;
+        // const query = `SELECT * FROM account_details WHERE StudentID = '${student_id}'; `;
         // Chronological order
-        const query = `SELECT * FROM account_details WHERE StudentID = '${student_id}' ORDER BY DatePaid ASC;`;
+        const query = `SELECT * FROM account_details WHERE StudentID = '${student_id}' ORDER BY DatePaid ASC; `;
         db.query(query, (err, result) => {
             if (err) {
                 console.log(err);
@@ -465,6 +490,11 @@ app.get('/accounts/:student_id', verifyToken, async (req, res) => {
                 if (err) {
                     console.log(err);
                 }
+
+                if (studentResult.length === 0) {
+                    return res.status(404).json({ message: 'Student not found' });
+                }
+
                 const student = studentResult[0];
                 // console.log(student);
 
@@ -579,8 +609,8 @@ app.get('/guide_changes', verifyToken, async (req, res) => {
             const guideChanges = [];
             for (const change of result) {
                 const { student_id, old_guide_id, new_guide_id, date_of_change } = change;
-                const oldGuideQuery = `SELECT name FROM guides WHERE guide_id = ${old_guide_id}`;
-                const newGuideQuery = `SELECT name FROM guides WHERE guide_id = ${new_guide_id}`;
+                const oldGuideQuery = `SELECT name FROM guides WHERE guide_id = ${old_guide_id} `;
+                const newGuideQuery = `SELECT name FROM guides WHERE guide_id = ${new_guide_id} `;
 
                 const oldGuideResult = await new Promise((resolve, reject) => {
                     db.query(oldGuideQuery, (err, result) => {
@@ -636,9 +666,9 @@ app.post('/guide_changes/add', verifyToken, async function (req, res) {
             }
 
             // Add new Guide change into table
-            const addQuery = `INSERT INTO Guide_Changes (student_id, old_guide_id, new_guide_id, date_of_change) VALUES ('${student_id}', ${old_guide_id}, ${new_guide_id}, '${date_of_change}');`;
+            const addQuery = `INSERT INTO Guide_Changes(student_id, old_guide_id, new_guide_id, date_of_change) VALUES('${student_id}', ${old_guide_id}, ${new_guide_id}, '${date_of_change}'); `;
             // Update student table in guide_id
-            const updateQuery = `UPDATE Students SET guide_id = ${new_guide_id} WHERE admn_no = '${student_id}';`;
+            const updateQuery = `UPDATE Students SET guide_id = ${new_guide_id} WHERE admn_no = '${student_id}'; `;
             db.query(addQuery, (err, result) => {
                 if (err) {
                     console.log(err);
@@ -674,8 +704,8 @@ app.get('/guide_changes/:studentId', verifyToken, async (req, res) => {
             const guideChanges = [];
             for (const change of result) {
                 const { student_id, old_guide_id, new_guide_id, date_of_change } = change;
-                const oldGuideQuery = `SELECT name FROM guides WHERE guide_id = ${old_guide_id}`;
-                const newGuideQuery = `SELECT name FROM guides WHERE guide_id = ${new_guide_id}`;
+                const oldGuideQuery = `SELECT name FROM guides WHERE guide_id = ${old_guide_id} `;
+                const newGuideQuery = `SELECT name FROM guides WHERE guide_id = ${new_guide_id} `;
 
                 const oldGuideResult = await new Promise((resolve, reject) => {
                     db.query(oldGuideQuery, (err, result) => {
@@ -712,4 +742,138 @@ app.get('/guide_changes/:studentId', verifyToken, async (req, res) => {
     }
 });
 
-app.listen(port, () => console.log(`PhD SMS app listening on port ${port}!`))
+app.get('/courses', verifyToken, async (req, res) => {
+    try {
+        const query = `SELECT * FROM courses`;
+        db.query(query, (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            res.status(200).json({ courses: result });
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Error occurred while fetching courses' });
+    }
+});
+
+app.post('/courses/add', verifyToken, async function (req, res) {
+    try {
+        const { course_id, course_name, description, credits, source, mode, duration, department } = req.body;
+
+        if (!course_id || !course_name || !credits) {
+            return res.status(400).json({ message: 'Please fill all the fields' });
+        }
+
+        const query = `INSERT INTO courses(course_id, course_name, description, credits, source, mode, duration, department) VALUES('${course_id}', '${course_name}', '${description || ''}', ${credits}, '${source || ''}', '${mode || ''}', ${duration || 0}, '${department || ''}'); `;
+        db.query(query, (err, result) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).json({ message: 'Error occured while adding the course' });
+            }
+            res.status(200).json({ message: 'Course added successfully' });
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Error occurred while adding course' });
+    }
+});
+
+app.put('/courses/:id', verifyToken, async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { course_name, course_description, credits, source, mode, course_duration } = req.body;
+
+        if (!course_name || !credits) {
+            return res.status(400).json({ message: 'Please fill all the fields' });
+        }
+
+        const query = `UPDATE Courses SET course_name = '${course_name}', course_description = '${course_description || ''}', credits = ${credits}, source = '${source || ''}', mode = '${mode || ''}', course_duration = ${course_duration || ''} WHERE course_id = '${id}'; `;
+        db.query(query, (err, result) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).json({ message: 'Error occured while updating the course' });
+            }
+            res.status(200).json({ message: 'Course updated successfully' });
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Error occurred while updating course' });
+    }
+});
+
+app.get('/course_enrollments', verifyToken, async (req, res) => {
+    try {
+        const query = `SELECT * FROM course_enrollments`;
+        db.query(query, (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            res.status(200).json({ course_enrollments: result });
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Error occurred while fetching course enrollments' });
+    }
+});
+
+app.post('/course_enrollments/add', verifyToken, async function (req, res) {
+    try {
+        const { student_id, course_id, passed } = req.body;
+
+        if (!student_id || !course_id) {
+            return res.status(400).json({ message: 'Please fill all the fields' });
+        }
+
+        const query = `INSERT INTO Course_Enrollments(student_id, course_id, passed) VALUES('${student_id}', ${course_id}, ${passed}); `;
+        db.query(query, (err, result) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).json({ message: 'Error occured while adding the course enrollment' });
+            }
+            res.status(200).json({ message: 'Course enrollment added successfully' });
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Error occurred while adding course enrollment' });
+    }
+});
+
+app.get('/course_enrollments/:student_id', verifyToken, async (req, res) => {
+    try {
+        const student_id = req.params.student_id;
+        // const query = `SELECT * FROM course_enrollments WHERE student_id = '${student_id}'`;
+        // Join course_enrollments and courses, to get course credits
+        const query = `SELECT ce.*, c.credits FROM course_enrollments ce JOIN courses c ON ce.course_id = c.course_id WHERE student_id = '${student_id}'`;
+        db.query(query, (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            // Credits for student passsed courses for the student
+            let credits = 0;
+            for (const course of result) {
+                if (course.passed) {
+                    credits += course.credits;
+                }
+            }
+            // res.status(200).json({ course_enrollments: result });
+            // Get Student Data
+            const studentQuery = `SELECT * FROM students WHERE admn_no = '${student_id}'`;
+            db.query(studentQuery, (err, studentResult) => {
+                if (err) {
+                    console.log(err);
+                }
+                if (!studentResult.length) {
+                    return res.status(404).json({ message: 'Student not found' });
+                }
+                res.status(200).json({ course_enrollments: result, student: studentResult[0], credits });
+            });
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Error occurred while fetching course enrollments' });
+    }
+});
+
+
+app.listen(port, () => console.log(`PhD SMS app listening on port ${port} !`))

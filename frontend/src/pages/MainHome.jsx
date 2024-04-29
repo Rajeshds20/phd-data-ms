@@ -79,17 +79,17 @@ function MainHome() {
                         <img style={{ width: '20px', height: '40px', marginTop: '20px' }} src={moveForwardLogo} alt='Go to Section' />
                     </div>
                     <p style={{ color: 'black' }}>
-                        Admissions & Scholars Data
+                        Scholars Data Entry
                     </p>
                 </div>
                 <div title='Extensions Section' className={`extensions admin-section ${(admin?.access == 'All' || admin?.access == 'Extension') ? '' : 'masked'}`} onClick={() => { navigateToSection('Extension') }}>
                     <div className='each-section-heading'>
                         <img src={Registrationlogo} alt='Extensions' />
-                        <h2>Extensions & Cancellations</h2>
+                        <h2>Re-Registrations & Cancellations</h2>
                         <img style={{ width: '20px', height: '40px', marginTop: '20px' }} src={moveForwardLogo} alt='Go to Section' />
                     </div>
                     <p style={{ color: 'black' }}>
-                        Ph.D Extensions & Cancellations
+                        Re-Registration Data
                     </p>
                 </div>
                 <div title='Accounts Section' className={`accounts admin-section ${(admin?.access == 'All' || admin?.access == 'Accounts') ? '' : 'masked'}`} onClick={() => { navigateToSection('Accounts') }}>
@@ -99,7 +99,7 @@ function MainHome() {
                         <img style={{ width: '20px', height: '40px', marginTop: '20px' }} src={moveForwardLogo} alt='Go to Section' />
                     </div>
                     <p style={{ color: 'black' }}>
-                        Accounts and Fees
+                        Fee Details of Scholars
                     </p>
                 </div>
                 <div title='Vivavoce Section' className={`vivavoce admin-section ${(admin?.access == 'All' || admin?.access == 'Vivavoce') ? '' : 'masked'}`} onClick={() => { navigateToSection('Vivavoce') }}>
@@ -109,7 +109,7 @@ function MainHome() {
                         <img style={{ width: '20px', height: '40px', marginTop: '20px' }} src={moveForwardLogo} alt='Go to Section' />
                     </div>
                     <p style={{ color: 'black' }}>
-                        Pre-Ph.D Courses, RRM & Viva Voce
+                        Pre-Ph.D Courses & Viva Voce
                     </p>
                 </div>
             </div>

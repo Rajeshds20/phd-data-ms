@@ -22,6 +22,9 @@ import AdminsData from "./pages/AdminsData";
 import GuidesData from "./pages/GuidesData";
 import GuideChanges from "./pages/GuideChanges";
 import PreCourses from "./pages/PreCourses";
+import ViewCourses from "./pages/ViewCourses";
+import CourseEnrolments from "./pages/CourseEnrolments";
+import NewCourseEnrollments from "./pages/NewCourseEnrollments";
 
 
 function App() {
@@ -66,6 +69,22 @@ function App() {
     {
       path: "/vivavoce",
       element: <VivaVoceHome />,
+    },
+    {
+      path: "/courses",
+      element: <PreCourses />,
+    },
+    {
+      path: "/students/courses",
+      element: <CourseEnrolments />,
+    },
+    {
+      path: "/students/courses/new",
+      element: <NewCourseEnrollments />,
+    },
+    {
+      path: "/courses/view",
+      element: <ViewCourses />,
     },
     {
       path: "/Accounts",

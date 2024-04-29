@@ -65,6 +65,29 @@ Content-Type: application/json
 
 
 
+#####
+GET http://localhost:5000/courses
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6MSwibmFtZSI6IkRpcmVjdG9yIiwiZW1haWwiOiJzdXBlci1hZG1pbkBybmQuam50dWEuYWMuaW4iLCJwYXNzd29yZCI6IkFkbWluQDEyMyIsInJvbGUiOiJTdXBlcl9BZG1pbiIsImFjY2VzcyI6IkFsbCIsImlhdCI6MTcwNjEyMDc0OX0.i5cg2seJ_wyag-s0G1Y5kBFapS2heY33ZA8bcL96aS4
+Content-Type: application/json
+
+
+#####
+POST http://localhost:5000/courses/add
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6MSwibmFtZSI6IkRpcmVjdG9yIiwiZW1haWwiOiJzdXBlci1hZG1pbkBybmQuam50dWEuYWMuaW4iLCJwYXNzd29yZCI6IkFkbWluQDEyMyIsInJvbGUiOiJTdXBlcl9BZG1pbiIsImFjY2VzcyI6IkFsbCIsImlhdCI6MTcwNjEyMDc0OX0.i5cg2seJ_wyag-s0G1Y5kBFapS2heY33ZA8bcL96aS4
+Content-Type: application/json
+
+{
+      "course_id": "17D20303",
+      "course_name": "IPR",
+      "description": "Intellectual and Property Rights",
+      "duration": 6,
+      "credits": 4,
+      "source": "NPTEL",
+      "mode": "Online"
+}
+
+
+
 ###
 post http://localhost:5000/admins/add
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6MSwibmFtZSI6IkRpcmVjdG9yIiwiZW1haWwiOiJzdXBlci1hZG1pbkBybmQuam50dWEuYWMuaW4iLCJwYXNzd29yZCI6IkFkbWluQDEyMyIsInJvbGUiOiJTdXBlcl9BZG1pbiIsImFjY2VzcyI6IkFsbCIsImlhdCI6MTcwNjEyMDc0OX0.i5cg2seJ_wyag-s0G1Y5kBFapS2heY33ZA8bcL96aS4
@@ -101,3 +124,4 @@ Content-Type: application/json
     "email": "super-admin@rnd.jntua.ac.in",
     "password": "Admin@123"
 }
+
